@@ -1,0 +1,23 @@
+[package]
+name = "gaia-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "gaia"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+comfy-table.workspace = true
+rand.workspace = true
+directories.workspace = true
+gaia-core = { path = "../gaia-core" }
+gaia-tui = { path = "../gaia-tui" }
+serde_json = "1.0.149"
+tiny_http = "0.12.0"
+reqwest = { workspace = true, features = ["blocking"] }

@@ -1,0 +1,26 @@
+services:
+  gaia-vllm:
+    image: vllm/vllm-openai@sha256:70a098d90dbab428a001d9e852fc0fc8d67da5beb03e7851a22247653bf35923
+    container_name: gaia-vllm
+    restart: unless-stopped
+    runtime: nvidia
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    ipc: host
+    command:
+      - --model
+      - Qwen/Qwen2.5-7B-Instruct
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --dtype
+      - auto
+      - --api-key
+      - local-key

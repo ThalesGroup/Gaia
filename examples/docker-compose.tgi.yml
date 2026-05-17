@@ -1,0 +1,23 @@
+services:
+  gaia-tgi:
+    image: ghcr.io/huggingface/text-generation-inference@sha256:e6b0af6e0bf65337b84a19f15d74660c7892192f555fb0b68d3f3d62bf0c1e9a
+    container_name: gaia-tgi
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "8080:80"
+    volumes:
+      - ~/.cache/huggingface:/data
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command:
+      - --model-id
+      - Qwen/Qwen2.5-7B-Instruct

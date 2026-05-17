@@ -1,0 +1,182 @@
+models:
+  - id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
+    display_name: "Deepseek R1 Distill Qwen 7B"
+    family: "qwen"
+    params_b: 7
+    categories: ["chat", "reasoning", "lightweight"]
+    recommended_use: "Reasoning-focused assistant"
+    min_vram_gb_fp16: 16
+    min_vram_gb_int8: 10
+    min_vram_gb_int4: 6
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=568195"
+
+  - id: "microsoft/Phi-3.5-mini-instruct"
+    display_name: "Phi 3.5 Mini Instruct"
+    family: "phi"
+    params_b: 7
+    categories: ["chat", "code", "multilingual", "lightweight"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 16
+    min_vram_gb_int8: 10
+    min_vram_gb_int4: 6
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=790550"
+
+  - id: "mistralai/Mistral-7B-Instruct-v0.3"
+    display_name: "Mistral 7B Instruct v0.3"
+    family: "mistral"
+    params_b: 7
+    categories: ["chat", "lightweight"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 16
+    min_vram_gb_int8: 10
+    min_vram_gb_int4: 6
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=unknown; downloads=4160434"
+
+  - id: "Qwen/Qwen2.5-7B-Instruct"
+    display_name: "Qwen2.5 7B Instruct"
+    family: "qwen"
+    params_b: 7
+    categories: ["chat", "lightweight"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 16
+    min_vram_gb_int8: 10
+    min_vram_gb_int4: 6
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=12797133"
+
+  - id: "Qwen/Qwen2.5-Coder-7B-Instruct"
+    display_name: "Qwen2.5 Coder 7B Instruct"
+    family: "qwen"
+    params_b: 7
+    categories: ["chat", "code", "lightweight"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 16
+    min_vram_gb_int8: 10
+    min_vram_gb_int4: 6
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=2399726"
+
+  - id: "meta-llama/Llama-3.1-8B-Instruct"
+    display_name: "Llama 3.1 8B Instruct"
+    family: "llama"
+    params_b: 8
+    categories: ["chat", "multilingual", "french-friendly", "lightweight"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 18
+    min_vram_gb_int8: 12
+    min_vram_gb_int4: 7
+    supports_vllm: true
+    supports_tgi: true
+    gated: true
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=9708754"
+
+  - id: "NousResearch/Hermes-3-Llama-3.1-8B"
+    display_name: "Hermes 3 Llama 3.1 8B"
+    family: "llama"
+    params_b: 8
+    categories: ["chat", "lightweight"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 18
+    min_vram_gb_int8: 12
+    min_vram_gb_int4: 7
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=226862"
+
+  - id: "google/gemma-2-9b-it"
+    display_name: "Gemma 2 9b It"
+    family: "gemma"
+    params_b: 9
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 20
+    min_vram_gb_int8: 13
+    min_vram_gb_int4: 8
+    supports_vllm: true
+    supports_tgi: true
+    gated: true
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=428951"
+
+  - id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"
+    display_name: "Deepseek R1 Distill Qwen 14B"
+    family: "qwen"
+    params_b: 14
+    categories: ["chat", "reasoning"]
+    recommended_use: "Reasoning-focused assistant"
+    min_vram_gb_fp16: 30
+    min_vram_gb_int8: 19
+    min_vram_gb_int4: 12
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=492797"
+
+  - id: "Qwen/Qwen2.5-14B-Instruct"
+    display_name: "Qwen2.5 14B Instruct"
+    family: "qwen"
+    params_b: 14
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 30
+    min_vram_gb_int8: 19
+    min_vram_gb_int4: 12
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=2504007"
+
+  - id: "Qwen/Qwen2.5-Coder-14B-Instruct"
+    display_name: "Qwen2.5 Coder 14B Instruct"
+    family: "qwen"
+    params_b: 14
+    categories: ["chat", "code"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 30
+    min_vram_gb_int8: 19
+    min_vram_gb_int4: 12
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=1310994"
+
+  - id: "google/gemma-2-27b-it"
+    display_name: "Gemma 2 27b It"
+    family: "gemma"
+    params_b: 27
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 56
+    min_vram_gb_int8: 35
+    min_vram_gb_int4: 21
+    supports_vllm: true
+    supports_tgi: true
+    gated: true
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=47276"
+
+  - id: "meta-llama/Llama-3.1-70B-Instruct"
+    display_name: "Llama 3.1 70B Instruct"
+    family: "llama"
+    params_b: 70
+    categories: ["chat", "multilingual", "french-friendly"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 142
+    min_vram_gb_int8: 89
+    min_vram_gb_int4: 53
+    supports_vllm: true
+    supports_tgi: true
+    gated: true
+    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=753692"
