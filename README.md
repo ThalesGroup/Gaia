@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/License-MIT-2ea44f" alt="MIT license" />
 </p>
 
-`gaia` is a terminal-first toolkit to deploy Hugging Face LLMs with a practical CLI/TUI workflow.
+`gaia` is a terminal-first toolkit to deploy open-weights LLMs with a practical CLI/TUI workflow.
 
 It is designed to stay focused on runtime orchestration:
 
