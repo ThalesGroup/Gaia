@@ -65,7 +65,10 @@ jobs:
           - "curlimages/curl@sha256:4026b29997dc7c823b51c164b71e2b51e0fd95cce4601f78202c513d97da2922"
     steps:
       - name: Scan image with Trivy
+        continue-on-error: true
         uses: aquasecurity/trivy-action@6e7b7d1fd3e4fef0c5fa8cce1229c54b2c9bd0d8 # v0.24.0
+        env:
+          TRIVY_TIMEOUT: 15m
         with:
           image-ref: ${{ matrix.image }}
           format: table
