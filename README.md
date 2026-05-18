@@ -31,6 +31,7 @@ Full documentation lives in `docs/`:
 - `docs/README.md`
 - `docs/getting-started.md`
 - `docs/command-reference.md`
+- `docs/architecture.md`
 - `docs/chatbot-agent-from-scratch.md`
 - `docs/openai-compatibility.md`
 - `docs/deployment-patterns.md`

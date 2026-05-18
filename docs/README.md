@@ -12,6 +12,9 @@ This directory contains the complete project documentation.
 - `docs/command-reference.md`
   - Full CLI reference for all public commands
   - Options and practical examples per command
+- `docs/architecture.md`
+  - Workspace structure and runtime flow
+  - Core abstractions, backend boundaries, and extension points
 - `docs/chatbot-agent-from-scratch.md`
   - End-to-end tutorial for building a chatbot and basic agents
   - Includes local, production-like, and multi-VM flow
@@ -34,8 +37,9 @@ This directory contains the complete project documentation.
 
 1. `docs/getting-started.md`
 2. `docs/command-reference.md`
-3. `docs/chatbot-agent-from-scratch.md`
-4. `docs/openai-compatibility.md`
-5. `docs/deployment-patterns.md`
-6. `docs/model-catalog.md`
-7. `docs/troubleshooting.md`
+3. `docs/architecture.md`
+4. `docs/chatbot-agent-from-scratch.md`
+5. `docs/openai-compatibility.md`
+6. `docs/deployment-patterns.md`
+7. `docs/model-catalog.md`
+8. `docs/troubleshooting.md`
