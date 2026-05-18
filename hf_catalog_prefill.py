@@ -23,11 +23,26 @@ from dataclasses import dataclass
 from typing import Any
 
 HF_API_BASE = "https://huggingface.co/api"
+HF_MODEL_BASE = "https://huggingface.co"
 USER_AGENT = "gaia-hf-prefill/0.1"
+UNKNOWN_PARAMS_FALLBACK_B = 70.0
 
 _ID_LINE_RE = re.compile(r'^\s*-\s*id:\s*["\']?([^"\']+)["\']?\s*$')
-_PARAM_RE = re.compile(r"(\d+(?:\.\d+)?)\s*([bm])\b", re.IGNORECASE)
-_PARAM_HINT_RE = re.compile(r"(\d+(?:[._]\d+)?)\s*b\b", re.IGNORECASE)
+_PARAM_RE = re.compile(
+    r"(?<![a-z0-9])a?(\d+(?:[._]\d+)?)\s*([bmt])(?:\b|(?=[^a-z0-9]))",
+    re.IGNORECASE,
+)
+_PARAM_KEYS = (
+    "params",
+    "parameter_count",
+    "parameters",
+    "model_size",
+    "size",
+    "num_parameters",
+    "n_params",
+    "total_params",
+    "total_parameters",
+)
 
 
 @dataclass
@@ -152,6 +167,9 @@ def main() -> int:
             meta = fetch_model_metadata(
                 model_id=model_id, token=args.token, timeout=args.timeout
             )
+            config_data = fetch_model_config(
+                model_id=model_id, token=args.token, timeout=args.timeout
+            )
             if (
                 not args.allow_non_text_generation
                 and not is_text_generation_model(meta, fallback_id=model_id)
@@ -160,7 +178,9 @@ def main() -> int:
                     f"[{index:>3}/{len(model_ids)}] skip {model_id} -> not text-generation"
                 )
                 continue
-            entries.append(build_catalog_entry(meta, fallback_id=model_id))
+            entries.append(
+                build_catalog_entry(meta, config_data=config_data, fallback_id=model_id)
+            )
             print(f"[{index:>3}/{len(model_ids)}] ok  {model_id}")
         except Exception as exc:  # noqa: BLE001 - script robustness
             errors.append(f"{model_id}: {exc}")
@@ -245,6 +265,18 @@ def fetch_model_metadata(*, model_id: str, token: str, timeout: float) -> dict[s
     return payload
 
 
+def fetch_model_config(*, model_id: str, token: str, timeout: float) -> dict[str, Any]:
+    encoded = urllib.parse.quote(model_id, safe="/")
+    url = f"{HF_MODEL_BASE}/{encoded}/raw/main/config.json"
+    try:
+        payload = http_get_json(url, token=token, timeout=timeout)
+    except RuntimeError:
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+    return payload
+
+
 def is_text_generation_model(meta: dict[str, Any], *, fallback_id: str) -> bool:
     pipeline_tag = str(meta.get("pipeline_tag") or "").strip().lower()
     tags = normalize_tags(meta.get("tags"))
@@ -287,7 +319,9 @@ def http_get_json(url: str, *, token: str, timeout: float) -> Any:
         raise RuntimeError(f"Network error for {url}: {exc}") from exc
 
 
-def build_catalog_entry(meta: dict[str, Any], *, fallback_id: str) -> CatalogEntry:
+def build_catalog_entry(
+    meta: dict[str, Any], *, config_data: dict[str, Any], fallback_id: str
+) -> CatalogEntry:
     model_id = str(meta.get("id") or fallback_id)
     tags = normalize_tags(meta.get("tags"))
     pipeline_tag = str(meta.get("pipeline_tag") or "").strip().lower()
@@ -295,7 +329,7 @@ def build_catalog_entry(meta: dict[str, Any], *, fallback_id: str) -> CatalogEnt
     if not isinstance(card_data, dict):
         card_data = {}
 
-    params_b = estimate_params_b(model_id, tags, card_data)
+    params_b = estimate_params_b(model_id, tags, card_data, config_data)
     categories = infer_categories(model_id, tags, pipeline_tag, card_data, params_b)
     family = infer_family(model_id)
     display_name = infer_display_name(model_id, card_data)
@@ -375,37 +409,36 @@ def infer_display_name(model_id: str, card_data: dict[str, Any]) -> str:
     return " ".join(pretty) or slug
 
 
-def estimate_params_b(model_id: str, tags: list[str], card_data: dict[str, Any]) -> float:
-    candidates: list[float] = []
-    for key in ("params", "parameter_count", "model_size", "size"):
-        value = card_data.get(key)
-        parsed = parse_params_value(value)
-        if parsed:
-            candidates.append(parsed)
+def estimate_params_b(
+    model_id: str, tags: list[str], card_data: dict[str, Any], config_data: dict[str, Any]
+) -> float:
+    explicit_candidates: list[float] = []
+    for source in (card_data, config_data):
+        for key in _PARAM_KEYS:
+            parsed = parse_params_value(source.get(key))
+            if parsed:
+                explicit_candidates.append(parsed)
+
     for tag in tags:
         parsed = parse_params_value(tag)
         if parsed:
-            candidates.append(parsed)
+            explicit_candidates.append(parsed)
 
-    # fallback from model id
-    probe = model_id.lower().replace("_", ".")
-    for match in _PARAM_HINT_RE.finditer(probe):
-        numeric = match.group(1).replace("_", ".")
-        try:
-            value = float(numeric)
-            if 0.1 <= value <= 1000:
-                candidates.append(value)
-        except ValueError:
-            continue
+    parsed_from_id = parse_params_value(model_id)
+    if parsed_from_id:
+        explicit_candidates.append(parsed_from_id)
 
-    if not candidates:
-        return 7.0
+    # For MoE names such as `30B-A3B`, keep total parameters rather than active
+    # parameters because deployment memory is closer to total weights.
+    explicit_plausible = sorted(value for value in explicit_candidates if 0.1 <= value <= 5000)
+    if explicit_plausible:
+        return round(explicit_plausible[-1], 1)
 
-    # keep plausible range and choose the smallest plausible "B" hint
-    plausible = sorted(value for value in candidates if 0.1 <= value <= 5000)
-    if not plausible:
-        return 7.0
-    return round(plausible[0], 1)
+    estimated_from_config = estimate_transformer_params_b(config_data)
+    if estimated_from_config and 0.1 <= estimated_from_config <= 5000:
+        return round(estimated_from_config, 1)
+
+    return UNKNOWN_PARAMS_FALLBACK_B
 
 
 def parse_params_value(value: Any) -> float | None:
@@ -421,14 +454,87 @@ def parse_params_value(value: Any) -> float | None:
         return None
 
     text = value.strip().lower().replace(",", "")
-    match = _PARAM_RE.search(text)
-    if not match:
+    candidates: list[float] = []
+    for match in _PARAM_RE.finditer(text):
+        numeric = float(match.group(1).replace("_", "."))
+        unit = match.group(2).lower()
+        if unit == "m":
+            candidates.append(numeric / 1000.0)
+        elif unit == "t":
+            candidates.append(numeric * 1000.0)
+        else:
+            candidates.append(numeric)
+    if not candidates:
         return None
-    numeric = float(match.group(1))
-    unit = match.group(2).lower()
-    if unit == "m":
-        return numeric / 1000.0
-    return numeric
+    return max(candidates)
+
+
+def estimate_transformer_params_b(config_data: dict[str, Any]) -> float | None:
+    layers = get_numeric_config(
+        config_data, "num_hidden_layers", "n_layer", "n_layers", "num_layers"
+    )
+    hidden = get_numeric_config(config_data, "hidden_size", "n_embd", "d_model", "dim")
+    vocab = get_numeric_config(config_data, "vocab_size")
+    if not layers or not hidden:
+        return None
+
+    heads = get_numeric_config(config_data, "num_attention_heads", "n_head", "num_heads")
+    kv_heads = get_numeric_config(config_data, "num_key_value_heads", "n_head_kv")
+    if heads and kv_heads and heads > 0:
+        kv_dim = hidden * (kv_heads / heads)
+        attention_params = 2.0 * hidden * hidden + 2.0 * hidden * kv_dim
+    else:
+        attention_params = 4.0 * hidden * hidden
+
+    dense_intermediate = get_numeric_config(
+        config_data, "intermediate_size", "ffn_dim", "n_inner", "hidden_dim"
+    )
+    moe_intermediate = get_numeric_config(config_data, "moe_intermediate_size")
+    experts = get_numeric_config(
+        config_data, "n_routed_experts", "num_local_experts", "num_experts"
+    )
+    shared_experts = (
+        get_numeric_config(config_data, "n_shared_experts", "num_shared_experts") or 0.0
+    )
+    first_dense_layers = get_numeric_config(config_data, "first_k_dense_replace") or 0.0
+
+    if experts and moe_intermediate:
+        dense_layers = min(layers, first_dense_layers)
+        moe_layers = max(0.0, layers - dense_layers)
+        dense_width = dense_intermediate or moe_intermediate
+        dense_mlp_params = dense_layers * 3.0 * hidden * dense_width
+        moe_mlp_params = (
+            moe_layers * (experts + shared_experts) * 3.0 * hidden * moe_intermediate
+        )
+        mlp_params = dense_mlp_params + moe_mlp_params
+    else:
+        intermediate = dense_intermediate or hidden * 4.0
+        mlp_params = layers * 3.0 * hidden * intermediate
+
+    embedding_params = (vocab or 0.0) * hidden
+    output_params = 0.0
+    if vocab and config_data.get("tie_word_embeddings") is False:
+        output_params = vocab * hidden
+
+    total_params = embedding_params + output_params + layers * attention_params + mlp_params
+    if total_params <= 0:
+        return None
+    return total_params / 1_000_000_000.0
+
+
+def get_numeric_config(config_data: dict[str, Any], *keys: str) -> float | None:
+    for key in keys:
+        value = config_data.get(key)
+        if isinstance(value, bool):
+            continue
+        if isinstance(value, (int, float)):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                continue
+    return None
 
 
 def infer_categories(
@@ -449,7 +555,7 @@ def infer_categories(
         categories.append("reasoning")
     if infer_multilingual(tags, card_data, probe):
         categories.append("multilingual")
-    if params_b <= 8.0:
+    if 0.1 <= params_b <= 8.0:
         categories.append("lightweight")
     if contains_any_token(probe, ("32k", "64k", "128k", "long-context", "long context")):
         categories.append("long-context")

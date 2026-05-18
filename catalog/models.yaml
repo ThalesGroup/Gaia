@@ -25,15 +25,15 @@ models:
     supports_tgi: true
     gated: false
 
-  - id: "nvidia/NVIDIA-Nemotron-Labs-3-Elastic-30B-A3B-BF16"
-    display_name: "Nvidia Nemotron Labs 3 Elastic 30B A3B BF16"
-    family: "nvidia"
-    params_b: 3
+  - id: "microsoft/Phi-3.5-mini-instruct"
+    display_name: "Phi 3.5 Mini Instruct"
+    family: "phi"
+    params_b: 3.8
     categories: ["chat", "code", "multilingual", "lightweight"]
     recommended_use: "Coding assistant and developer chat"
-    min_vram_gb_fp16: 8
-    min_vram_gb_int8: 5
-    min_vram_gb_int4: 3
+    min_vram_gb_fp16: 10
+    min_vram_gb_int8: 7
+    min_vram_gb_int4: 4
     supports_vllm: true
     supports_tgi: true
     gated: false
@@ -51,77 +51,12 @@ models:
     supports_tgi: true
     gated: false
 
-  - id: "deepseek-ai/DeepSeek-V4-Flash"
-    display_name: "Deepseek V4 Flash"
-    family: "deepseek"
-    params_b: 7
-    categories: ["chat", "lightweight"]
-    recommended_use: "General-purpose assistant"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
-  - id: "deepseek-ai/DeepSeek-V4-Pro"
-    display_name: "Deepseek V4 Pro"
-    family: "deepseek"
-    params_b: 7
-    categories: ["chat", "lightweight"]
-    recommended_use: "General-purpose assistant"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
-  - id: "inclusionAI/Ling-2.6-1T"
-    display_name: "Ling 2.6 1T"
-    family: "inclusionai"
-    params_b: 7
-    categories: ["chat", "code", "lightweight"]
-    recommended_use: "Coding assistant and developer chat"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
-  - id: "microsoft/Phi-3.5-mini-instruct"
-    display_name: "Phi 3.5 Mini Instruct"
-    family: "phi"
-    params_b: 7
-    categories: ["chat", "code", "multilingual", "lightweight"]
-    recommended_use: "Coding assistant and developer chat"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
   - id: "mistralai/Mistral-7B-Instruct-v0.3"
     display_name: "Mistral 7B Instruct v0.3"
     family: "mistral"
     params_b: 7
     categories: ["chat", "lightweight"]
     recommended_use: "General-purpose assistant"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
-  - id: "poolside/Laguna-XS.2"
-    display_name: "Laguna XS.2"
-    family: "poolside"
-    params_b: 7
-    categories: ["chat", "code", "lightweight"]
-    recommended_use: "Coding assistant and developer chat"
     min_vram_gb_fp16: 16
     min_vram_gb_int8: 10
     min_vram_gb_int4: 6
@@ -155,45 +90,6 @@ models:
     supports_tgi: true
     gated: false
 
-  - id: "tencent/Hy3-preview"
-    display_name: "Hy3 Preview"
-    family: "tencent"
-    params_b: 7
-    categories: ["chat", "lightweight"]
-    recommended_use: "General-purpose assistant"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
-  - id: "XiaomiMiMo/MiMo-V2.5-Pro"
-    display_name: "Mimo V2.5 Pro"
-    family: "xiaomimimo"
-    params_b: 7
-    categories: ["chat", "code", "multilingual", "lightweight", "long-context"]
-    recommended_use: "Coding assistant and developer chat"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
-  - id: "zai-org/GLM-5.1"
-    display_name: "Glm 5.1"
-    family: "zai-org"
-    params_b: 7
-    categories: ["chat", "multilingual", "lightweight"]
-    recommended_use: "General-purpose assistant"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
   - id: "meta-llama/Llama-3.1-8B-Instruct"
     display_name: "Llama 3.1 8B Instruct"
     family: "llama"
@@ -212,19 +108,6 @@ models:
     family: "llama"
     params_b: 8
     categories: ["chat", "lightweight"]
-    recommended_use: "General-purpose assistant"
-    min_vram_gb_fp16: 18
-    min_vram_gb_int8: 12
-    min_vram_gb_int4: 7
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-
-  - id: "Qwen/WebWorld-32B"
-    display_name: "Webworld 32B"
-    family: "qwen"
-    params_b: 8
-    categories: ["chat", "multilingual", "lightweight", "long-context"]
     recommended_use: "General-purpose assistant"
     min_vram_gb_fp16: 18
     min_vram_gb_int8: 12
@@ -350,6 +233,19 @@ models:
     supports_tgi: false
     gated: true
 
+  - id: "nvidia/NVIDIA-Nemotron-Labs-3-Elastic-30B-A3B-BF16"
+    display_name: "Nvidia Nemotron Labs 3 Elastic 30B A3B BF16"
+    family: "nvidia"
+    params_b: 30
+    categories: ["chat", "code", "multilingual"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 62
+    min_vram_gb_int8: 39
+    min_vram_gb_int4: 23
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
   - id: "z-lab/gemma-4-31B-it-DFlash"
     display_name: "Gemma 4 31B It Dflash"
     family: "gemma"
@@ -359,6 +255,32 @@ models:
     min_vram_gb_fp16: 64
     min_vram_gb_int8: 40
     min_vram_gb_int4: 24
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "Qwen/WebWorld-32B"
+    display_name: "Webworld 32B"
+    family: "qwen"
+    params_b: 32
+    categories: ["chat", "multilingual", "long-context"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 66
+    min_vram_gb_int8: 41
+    min_vram_gb_int4: 25
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "poolside/Laguna-XS.2"
+    display_name: "Laguna XS.2"
+    family: "poolside"
+    params_b: 33
+    categories: ["chat", "code"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 68
+    min_vram_gb_int8: 43
+    min_vram_gb_int4: 26
     supports_vllm: true
     supports_tgi: true
     gated: false
@@ -375,3 +297,81 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: true
+
+  - id: "deepseek-ai/DeepSeek-V4-Flash"
+    display_name: "Deepseek V4 Flash"
+    family: "deepseek"
+    params_b: 280.6
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 564
+    min_vram_gb_int8: 350
+    min_vram_gb_int4: 209
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "tencent/Hy3-preview"
+    display_name: "Hy3 Preview"
+    family: "tencent"
+    params_b: 292
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 586
+    min_vram_gb_int8: 364
+    min_vram_gb_int4: 217
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "zai-org/GLM-5.1"
+    display_name: "Glm 5.1"
+    family: "zai-org"
+    params_b: 742
+    categories: ["chat", "multilingual"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 1486
+    min_vram_gb_int8: 922
+    min_vram_gb_int4: 550
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "inclusionAI/Ling-2.6-1T"
+    display_name: "Ling 2.6 1T"
+    family: "inclusionai"
+    params_b: 1000
+    categories: ["chat", "code"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 2002
+    min_vram_gb_int8: 1242
+    min_vram_gb_int4: 741
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "XiaomiMiMo/MiMo-V2.5-Pro"
+    display_name: "Mimo V2.5 Pro"
+    family: "xiaomimimo"
+    params_b: 1022.2
+    categories: ["chat", "code", "multilingual", "long-context"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 2047
+    min_vram_gb_int8: 1270
+    min_vram_gb_int4: 758
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "deepseek-ai/DeepSeek-V4-Pro"
+    display_name: "Deepseek V4 Pro"
+    family: "deepseek"
+    params_b: 1559.6
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 3122
+    min_vram_gb_int8: 1936
+    min_vram_gb_int4: 1156
+    supports_vllm: true
+    supports_tgi: true
+    gated: false

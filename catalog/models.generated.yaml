@@ -1,4 +1,43 @@
 models:
+  - id: "HuggingFaceTB/nanowhale-100m"
+    display_name: "Nanowhale 100m"
+    family: "huggingfacetb"
+    params_b: 0.1
+    categories: ["chat", "code", "lightweight"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 4
+    min_vram_gb_int8: 3
+    min_vram_gb_int4: 2
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "IAAR-Shanghai/MemPrivacy-1.7B-SFT"
+    display_name: "Memprivacy 1.7B Sft"
+    family: "iaar-shanghai"
+    params_b: 1.7
+    categories: ["chat", "multilingual", "lightweight"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 6
+    min_vram_gb_int8: 4
+    min_vram_gb_int4: 3
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "microsoft/Phi-3.5-mini-instruct"
+    display_name: "Phi 3.5 Mini Instruct"
+    family: "phi"
+    params_b: 3.8
+    categories: ["chat", "code", "multilingual", "lightweight"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 10
+    min_vram_gb_int8: 7
+    min_vram_gb_int4: 4
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
   - id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
     display_name: "Deepseek R1 Distill Qwen 7B"
     family: "qwen"
@@ -11,21 +50,6 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=568195"
-
-  - id: "microsoft/Phi-3.5-mini-instruct"
-    display_name: "Phi 3.5 Mini Instruct"
-    family: "phi"
-    params_b: 7
-    categories: ["chat", "code", "multilingual", "lightweight"]
-    recommended_use: "Coding assistant and developer chat"
-    min_vram_gb_fp16: 16
-    min_vram_gb_int8: 10
-    min_vram_gb_int4: 6
-    supports_vllm: true
-    supports_tgi: true
-    gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=790550"
 
   - id: "mistralai/Mistral-7B-Instruct-v0.3"
     display_name: "Mistral 7B Instruct v0.3"
@@ -39,7 +63,6 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=unknown; downloads=4160434"
 
   - id: "Qwen/Qwen2.5-7B-Instruct"
     display_name: "Qwen2.5 7B Instruct"
@@ -53,7 +76,6 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=12797133"
 
   - id: "Qwen/Qwen2.5-Coder-7B-Instruct"
     display_name: "Qwen2.5 Coder 7B Instruct"
@@ -67,13 +89,12 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=2399726"
 
   - id: "meta-llama/Llama-3.1-8B-Instruct"
     display_name: "Llama 3.1 8B Instruct"
     family: "llama"
     params_b: 8
-    categories: ["chat", "multilingual", "french-friendly", "lightweight"]
+    categories: ["chat", "multilingual", "lightweight"]
     recommended_use: "General-purpose assistant"
     min_vram_gb_fp16: 18
     min_vram_gb_int8: 12
@@ -81,7 +102,6 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: true
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=9708754"
 
   - id: "NousResearch/Hermes-3-Llama-3.1-8B"
     display_name: "Hermes 3 Llama 3.1 8B"
@@ -95,7 +115,32 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=226862"
+
+  - id: "Qwen/WebWorld-8B"
+    display_name: "Webworld 8B"
+    family: "qwen"
+    params_b: 8
+    categories: ["chat", "multilingual", "lightweight", "long-context"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 18
+    min_vram_gb_int8: 12
+    min_vram_gb_int4: 7
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "zed-industries/zeta-2.1"
+    display_name: "Zeta 2.1"
+    family: "zed-industries"
+    params_b: 8
+    categories: ["chat", "code", "lightweight"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 18
+    min_vram_gb_int8: 12
+    min_vram_gb_int4: 7
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
 
   - id: "google/gemma-2-9b-it"
     display_name: "Gemma 2 9b It"
@@ -109,7 +154,6 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: true
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=428951"
 
   - id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"
     display_name: "Deepseek R1 Distill Qwen 14B"
@@ -123,7 +167,6 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=492797"
 
   - id: "Qwen/Qwen2.5-14B-Instruct"
     display_name: "Qwen2.5 14B Instruct"
@@ -137,7 +180,6 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=2504007"
 
   - id: "Qwen/Qwen2.5-Coder-14B-Instruct"
     display_name: "Qwen2.5 Coder 14B Instruct"
@@ -151,7 +193,19 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: false
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=1310994"
+
+  - id: "manjunathshiva/gpt-oss-20b-tq3"
+    display_name: "Gpt Oss 20b tq3"
+    family: "gpt"
+    params_b: 20
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 42
+    min_vram_gb_int8: 27
+    min_vram_gb_int4: 16
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
 
   - id: "google/gemma-2-27b-it"
     display_name: "Gemma 2 27b It"
@@ -165,13 +219,77 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: true
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=47276"
+
+  - id: "z-lab/Qwen3.6-27B-DFlash"
+    display_name: "Qwen3.6 27B Dflash"
+    family: "qwen"
+    params_b: 27
+    categories: ["chat", "code", "embeddings"]
+    recommended_use: "Text embeddings and semantic search"
+    min_vram_gb_fp16: 56
+    min_vram_gb_int8: 35
+    min_vram_gb_int4: 21
+    supports_vllm: false
+    supports_tgi: false
+    gated: true
+
+  - id: "nvidia/NVIDIA-Nemotron-Labs-3-Elastic-30B-A3B-BF16"
+    display_name: "Nvidia Nemotron Labs 3 Elastic 30B A3B BF16"
+    family: "nvidia"
+    params_b: 30
+    categories: ["chat", "code", "multilingual"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 62
+    min_vram_gb_int8: 39
+    min_vram_gb_int4: 23
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "z-lab/gemma-4-31B-it-DFlash"
+    display_name: "Gemma 4 31B It Dflash"
+    family: "gemma"
+    params_b: 31
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 64
+    min_vram_gb_int8: 40
+    min_vram_gb_int4: 24
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "Qwen/WebWorld-32B"
+    display_name: "Webworld 32B"
+    family: "qwen"
+    params_b: 32
+    categories: ["chat", "multilingual", "long-context"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 66
+    min_vram_gb_int8: 41
+    min_vram_gb_int4: 25
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "poolside/Laguna-XS.2"
+    display_name: "Laguna XS.2"
+    family: "poolside"
+    params_b: 33
+    categories: ["chat", "code"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 68
+    min_vram_gb_int8: 43
+    min_vram_gb_int4: 26
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
 
   - id: "meta-llama/Llama-3.1-70B-Instruct"
     display_name: "Llama 3.1 70B Instruct"
     family: "llama"
     params_b: 70
-    categories: ["chat", "multilingual", "french-friendly"]
+    categories: ["chat", "multilingual"]
     recommended_use: "General-purpose assistant"
     min_vram_gb_fp16: 142
     min_vram_gb_int8: 89
@@ -179,4 +297,81 @@ models:
     supports_vllm: true
     supports_tgi: true
     gated: true
-    notes: "Auto-generated from HF API; pipeline=text-generation; downloads=753692"
+
+  - id: "deepseek-ai/DeepSeek-V4-Flash"
+    display_name: "Deepseek V4 Flash"
+    family: "deepseek"
+    params_b: 280.6
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 564
+    min_vram_gb_int8: 350
+    min_vram_gb_int4: 209
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "tencent/Hy3-preview"
+    display_name: "Hy3 Preview"
+    family: "tencent"
+    params_b: 292
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 586
+    min_vram_gb_int8: 364
+    min_vram_gb_int4: 217
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "zai-org/GLM-5.1"
+    display_name: "Glm 5.1"
+    family: "zai-org"
+    params_b: 742
+    categories: ["chat", "multilingual"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 1486
+    min_vram_gb_int8: 922
+    min_vram_gb_int4: 550
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "inclusionAI/Ling-2.6-1T"
+    display_name: "Ling 2.6 1T"
+    family: "inclusionai"
+    params_b: 1000
+    categories: ["chat", "code"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 2002
+    min_vram_gb_int8: 1242
+    min_vram_gb_int4: 741
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "XiaomiMiMo/MiMo-V2.5-Pro"
+    display_name: "Mimo V2.5 Pro"
+    family: "xiaomimimo"
+    params_b: 1022.2
+    categories: ["chat", "code", "multilingual", "long-context"]
+    recommended_use: "Coding assistant and developer chat"
+    min_vram_gb_fp16: 2047
+    min_vram_gb_int8: 1270
+    min_vram_gb_int4: 758
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
+
+  - id: "deepseek-ai/DeepSeek-V4-Pro"
+    display_name: "Deepseek V4 Pro"
+    family: "deepseek"
+    params_b: 1559.6
+    categories: ["chat"]
+    recommended_use: "General-purpose assistant"
+    min_vram_gb_fp16: 3122
+    min_vram_gb_int8: 1936
+    min_vram_gb_int4: 1156
+    supports_vllm: true
+    supports_tgi: true
+    gated: false
