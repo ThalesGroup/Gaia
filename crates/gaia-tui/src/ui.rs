@@ -397,10 +397,6 @@ fn render_footer(frame: &mut Frame<'_>, area: Rect, app: &AppState) {
         WizardMode::ApiKeyInput => {
             "API key: Enter continue | Ctrl+g local-key | Esc back".to_owned()
         }
-        WizardMode::ChatbotChoice => "Chatbot choice: y/n or arrows | Enter continue".to_owned(),
-        WizardMode::ChatbotPortInput => {
-            "Chatbot port: digits | Enter continue | Esc back".to_owned()
-        }
         WizardMode::Confirm => "Confirm: Enter launch | Esc back | q quit".to_owned(),
     };
 
@@ -437,14 +433,6 @@ fn render_modal(frame: &mut Frame<'_>, app: &AppState) {
                 app.api_key_input.as_str(),
             );
         }
-        WizardMode::ChatbotPortInput => {
-            render_input_popup(
-                frame,
-                "Chatbot port",
-                "Used if chatbot UI is enabled.",
-                app.chatbot_port_input.as_str(),
-            );
-        }
         WizardMode::CategoryPicker => {
             render_selection_popup(
                 frame,
@@ -459,53 +447,6 @@ fn render_modal(frame: &mut Frame<'_>, app: &AppState) {
                 .map(|value| value.label().to_owned())
                 .collect::<Vec<_>>();
             render_selection_popup(frame, "Size filter", &options, app.size_picker_index);
-        }
-        WizardMode::ChatbotChoice => {
-            let selected = if app.chatbot_enabled {
-                "Yes, generate a clean local chatbot UI"
-            } else {
-                "No, API only"
-            };
-            let paragraph = Paragraph::new(Text::from(vec![
-                Line::from("Do you want a chatbot UI?"),
-                Line::from(""),
-                Line::from(vec![Span::styled(
-                    if app.chatbot_enabled {
-                        "> Yes, generate a clean local chatbot UI"
-                    } else {
-                        "  Yes, generate a clean local chatbot UI"
-                    },
-                    if app.chatbot_enabled {
-                        Theme::emphasis()
-                    } else {
-                        Theme::body_text()
-                    },
-                )]),
-                Line::from(vec![Span::styled(
-                    if app.chatbot_enabled {
-                        "  No, API only"
-                    } else {
-                        "> No, API only"
-                    },
-                    if app.chatbot_enabled {
-                        Theme::body_text()
-                    } else {
-                        Theme::emphasis()
-                    },
-                )]),
-                Line::from(""),
-                Line::from(format!("Current choice: {selected}")),
-                Line::from("Use y/n or arrows, then Enter."),
-            ]))
-            .wrap(Wrap { trim: true })
-            .block(
-                Block::default()
-                    .borders(Borders::ALL)
-                    .title(Span::styled(" Chatbot UI ", Theme::block_title())),
-            );
-            let area = centered_rect(62, 45, frame.area());
-            frame.render_widget(Clear, area);
-            frame.render_widget(paragraph, area);
         }
         WizardMode::Confirm => {
             let model = app.selected_model();
@@ -523,14 +464,6 @@ fn render_modal(frame: &mut Frame<'_>, app: &AppState) {
                         "local-key"
                     } else {
                         app.api_key_input.as_str()
-                    }
-                )),
-                Line::from(format!(
-                    "Chatbot UI: {}",
-                    if app.chatbot_enabled {
-                        format!("yes (port {})", app.chatbot_port_input)
-                    } else {
-                        "no".to_owned()
                     }
                 )),
                 Line::from(""),

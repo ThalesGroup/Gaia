@@ -28,28 +28,6 @@ jobs:
       - name: Run cargo audit
         run: cargo audit
 
-  npm-audit:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: templates/chatbot-react
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Setup Node
-        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: templates/chatbot-react/package-lock.json
-
-      - name: Install dependencies (deterministic)
-        run: npm ci --ignore-scripts
-
-      - name: Run npm audit
-        run: npm audit --audit-level=high
-
   trivy-image-scan:
     runs-on: ubuntu-latest
     strategy:
@@ -61,7 +39,6 @@ jobs:
           - "lmsysorg/sglang@sha256:061fb71f838e82000a1768c159654d526c2f17ebe751c21e7fc48ca53c8ef975"
           - "ghcr.io/ggml-org/llama.cpp@sha256:785bda5afb7430425e6b26006959b4d986ffcd08a006cc386af1f929016b74e2"
           - "ollama/ollama@sha256:7ffd891da3e9e278d042c856c0fbe1b10fa03ed1791471377dde331eae4ea834"
-          - "node@sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f"
           - "curlimages/curl@sha256:4026b29997dc7c823b51c164b71e2b51e0fd95cce4601f78202c513d97da2922"
     steps:
       - name: Scan image with Trivy
@@ -89,7 +66,6 @@ jobs:
           - "lmsysorg/sglang@sha256:061fb71f838e82000a1768c159654d526c2f17ebe751c21e7fc48ca53c8ef975"
           - "ghcr.io/ggml-org/llama.cpp@sha256:785bda5afb7430425e6b26006959b4d986ffcd08a006cc386af1f929016b74e2"
           - "ollama/ollama@sha256:7ffd891da3e9e278d042c856c0fbe1b10fa03ed1791471377dde331eae4ea834"
-          - "node@sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f"
           - "curlimages/curl@sha256:4026b29997dc7c823b51c164b71e2b51e0fd95cce4601f78202c513d97da2922"
     steps:
       - name: Scan image with Grype
@@ -123,7 +99,6 @@ jobs:
             "lmsysorg/sglang@sha256:061fb71f838e82000a1768c159654d526c2f17ebe751c21e7fc48ca53c8ef975"
             "ghcr.io/ggml-org/llama.cpp@sha256:785bda5afb7430425e6b26006959b4d986ffcd08a006cc386af1f929016b74e2"
             "ollama/ollama@sha256:7ffd891da3e9e278d042c856c0fbe1b10fa03ed1791471377dde331eae4ea834"
-            "node@sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f"
             "curlimages/curl@sha256:4026b29997dc7c823b51c164b71e2b51e0fd95cce4601f78202c513d97da2922"
           )
 

@@ -1,7 +1,7 @@
 <h1 align="center">Gaia</h1>
 
 <p align="center">
-  <img src="assets/images/gaia-banner.png" alt="Gaia banner" />
+  <img src="assets/images/gaia-banner.jpg" alt="Gaia banner" />
 </p>
 
 <p align="center">
@@ -13,6 +13,19 @@
   <img src="https://img.shields.io/badge/License-MIT-2ea44f" alt="MIT license" />
 </p>
 
+<p align="center">
+  <a href="#quickstart-local-2-commands">Quickstart</a> |
+  <a href="#documentation">Docs Map</a> |
+  <a href="#command-overview">CLI</a> |
+  <a href="#key-features">Capability Model</a> |
+  <a href="ROADMAP.md">Roadmap</a> |
+  <a href="docs/architecture.md">Architecture</a> |
+  <a href="docs/README.md">Docs</a> |
+  <a href="docs/deployment-patterns.md">Playbooks</a> |
+  <a href="docs/troubleshooting.md">Support</a> |
+  <a href="#production-secure-checklist-5-commands">Security</a>
+</p>
+
 `gaia` is a terminal-first toolkit to deploy open-weights LLMs with a practical CLI/TUI workflow.
 
 It is designed to stay focused on runtime orchestration:
@@ -21,7 +34,6 @@ It is designed to stay focused on runtime orchestration:
 - explore models from a local catalog (`models`, `recommend`)
 - launch inference backends (`serve`, `select`)
 - generate deployment artifacts (`generate-compose`, `generate-k8s`, `generate-systemd`)
-- scaffold and run a local chatbot UI (`init-chatbot`)
 - validate endpoint latency (`benchmark`)
 
 ## Documentation
@@ -32,7 +44,7 @@ Full documentation lives in `docs/`:
 - `docs/getting-started.md`
 - `docs/command-reference.md`
 - `docs/architecture.md`
-- `docs/chatbot-agent-from-scratch.md`
+- `docs/agent-from-scratch.md`
 - `docs/openai-compatibility.md`
 - `docs/deployment-patterns.md`
 - `docs/model-catalog.md`
@@ -44,6 +56,10 @@ Full documentation lives in `docs/`:
 - `SECURITY.md`
 - `CODE_OF_CONDUCT.md`
 - `LICENSE`
+
+## Project Direction
+
+- `ROADMAP.md`
 
 ## Key Features
 
@@ -60,7 +76,6 @@ Full documentation lives in `docs/`:
 - quantization profiles (`none`, `quality`, `balanced`, `memory`, `speed`)
 - model pinning by immutable commit SHA (`--model-revision`)
 - mock OpenAI API mode with `chat/completions`, `completions`, `responses`, `embeddings`, and audio endpoints (`--mock`)
-- deterministic chatbot dependencies via lockfile + `npm ci`
 
 ## Install From Source
 
@@ -155,8 +170,6 @@ gaia serve \
 - `gaia generate-k8s`
 - `gaia generate-systemd`
 - `gaia benchmark`
-- `gaia init-chatbot`
-- `gaia open-chatbot`
 
 See `docs/command-reference.md` for complete options and examples.
 
@@ -201,7 +214,6 @@ gaia/
     gaia-cli/
     gaia-tui/
   docs/
-  templates/chatbot-react/
   examples/
 ```
 

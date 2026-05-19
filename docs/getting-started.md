@@ -10,7 +10,6 @@ This guide gets you from source code to a running OpenAI-compatible endpoint.
 - NVIDIA drivers + NVIDIA Container Toolkit (for GPU backends such as vLLM, TGI, SGLang)
 - Optional:
   - `HF_TOKEN` for gated Hugging Face models
-  - Node.js + npm to run the generated chatbot UI
 
 Security profiles:
 
@@ -68,8 +67,7 @@ Typical flow:
 1. Browse and filter models.
 2. Switch backend (`b`) if needed.
 3. Set API port and key.
-4. Choose whether to enable chatbot generation.
-5. Confirm launch.
+4. Confirm launch.
 
 When the launch succeeds, `gaia` prints:
 
@@ -79,7 +77,7 @@ When the launch succeeds, `gaia` prints:
 
 ## Mock Mode End-To-End (No GPU Required)
 
-Use mock mode to validate integration and frontend behavior quickly.
+Use mock mode to validate API integration quickly.
 
 The mock server exposes OpenAI-style endpoints for:
 
@@ -97,24 +95,9 @@ Start API:
 gaia serve --mock --detach --host 0.0.0.0 --port 8000
 ```
 
-Generate chatbot:
-
-```bash
-gaia init-chatbot --path ./gaia-chatbot --force
-```
-
-Run chatbot:
-
-```bash
-cd ./gaia-chatbot
-npm ci
-npm run dev -- --host 0.0.0.0 --port 3000
-```
-
 Open:
 
 - API health: `http://localhost:8000/health`
-- Chatbot: `http://localhost:3000`
 
 Stop mock API:
 
@@ -171,6 +154,5 @@ The file keeps:
 - security profile (`dev` or `prod`)
 - selected backend
 - selected model, revision, and quantization settings
-- chatbot defaults (enabled, path, port)
 
 Most commands can override these values with CLI flags.

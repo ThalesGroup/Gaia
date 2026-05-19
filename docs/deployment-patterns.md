@@ -88,10 +88,10 @@ Install and enable with `systemctl`.
 
 ## Compose For Local Bundles
 
-`generate-compose` is ideal for local or small-stack setups where backend + chatbot are deployed together:
+`generate-compose` is ideal for local or small-stack setups where you want a reproducible backend stack:
 
 ```bash
-gaia generate-compose --backend tgi --model mistralai/Mistral-7B-Instruct-v0.3 --with-chatbot
+gaia generate-compose --backend tgi --model mistralai/Mistral-7B-Instruct-v0.3
 ```
 
 ## Security And Operations Checklist

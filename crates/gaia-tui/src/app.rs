@@ -12,8 +12,6 @@ pub struct SelectorInput {
     pub default_model: Option<String>,
     pub default_port: u16,
     pub default_api_key: String,
-    pub default_chatbot_enabled: bool,
-    pub default_chatbot_port: u16,
 }
 
 #[derive(Debug, Clone)]
@@ -22,8 +20,6 @@ pub struct SelectorResult {
     pub model_id: String,
     pub port: u16,
     pub api_key: String,
-    pub chatbot_enabled: bool,
-    pub chatbot_port: u16,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -34,8 +30,6 @@ pub enum WizardMode {
     SizePicker,
     PortInput,
     ApiKeyInput,
-    ChatbotChoice,
-    ChatbotPortInput,
     Confirm,
 }
 
@@ -127,8 +121,6 @@ pub struct AppState {
     pub size_picker_index: usize,
     pub port_input: String,
     pub api_key_input: String,
-    pub chatbot_enabled: bool,
-    pub chatbot_port_input: String,
     pub model_details_scroll: u16,
     pub details_focus: bool,
     catalog: ModelCatalog,
@@ -202,8 +194,6 @@ impl AppState {
             size_picker_index: 0,
             port_input: input.default_port.to_string(),
             api_key_input: input.default_api_key,
-            chatbot_enabled: input.default_chatbot_enabled,
-            chatbot_port_input: input.default_chatbot_port.to_string(),
             model_details_scroll: 0,
             details_focus: false,
             catalog: input.catalog,
@@ -256,8 +246,6 @@ impl AppState {
             WizardMode::SizePicker => self.handle_size_picker_key(key_event),
             WizardMode::PortInput => self.handle_port_input_key(key_event),
             WizardMode::ApiKeyInput => self.handle_api_key_input_key(key_event),
-            WizardMode::ChatbotChoice => self.handle_chatbot_choice_key(key_event),
-            WizardMode::ChatbotPortInput => self.handle_chatbot_port_input_key(key_event),
             WizardMode::Confirm => self.handle_confirm_key(key_event),
         }
     }
@@ -498,8 +486,8 @@ impl AppState {
                 if self.api_key_input.trim().is_empty() {
                     self.api_key_input = "local-key".to_owned();
                 }
-                self.mode = WizardMode::ChatbotChoice;
-                self.status_message = "Do you want a chatbot UI?".to_owned();
+                self.mode = WizardMode::Confirm;
+                self.status_message = "Review and confirm launch.".to_owned();
             }
             KeyCode::Char('g') if key_event.modifiers.contains(KeyModifiers::CONTROL) => {
                 self.api_key_input = "local-key".to_owned();
@@ -508,62 +496,6 @@ impl AppState {
             }
             KeyCode::Char(ch) if !key_event.modifiers.contains(KeyModifiers::CONTROL) => {
                 self.api_key_input.push(ch);
-            }
-            _ => {}
-        }
-        AppAction::None
-    }
-
-    fn handle_chatbot_choice_key(&mut self, key_event: KeyEvent) -> AppAction {
-        match key_event.code {
-            KeyCode::Esc => {
-                self.mode = WizardMode::ApiKeyInput;
-                self.status_message = "Back to API key input.".to_owned();
-            }
-            KeyCode::Left | KeyCode::Right | KeyCode::Up | KeyCode::Down => {
-                self.chatbot_enabled = !self.chatbot_enabled;
-            }
-            KeyCode::Char('y') | KeyCode::Char('Y') => {
-                self.chatbot_enabled = true;
-            }
-            KeyCode::Char('n') | KeyCode::Char('N') => {
-                self.chatbot_enabled = false;
-            }
-            KeyCode::Enter => {
-                if self.chatbot_enabled {
-                    self.mode = WizardMode::ChatbotPortInput;
-                    self.status_message = "Choose chatbot port.".to_owned();
-                } else {
-                    self.mode = WizardMode::Confirm;
-                    self.status_message = "Review and confirm launch.".to_owned();
-                }
-            }
-            _ => {}
-        }
-        AppAction::None
-    }
-
-    fn handle_chatbot_port_input_key(&mut self, key_event: KeyEvent) -> AppAction {
-        match key_event.code {
-            KeyCode::Esc => {
-                self.mode = WizardMode::ChatbotChoice;
-                self.status_message = "Back to chatbot choice.".to_owned();
-            }
-            KeyCode::Backspace => {
-                self.chatbot_port_input.pop();
-            }
-            KeyCode::Char(ch) if ch.is_ascii_digit() && self.chatbot_port_input.len() < 5 => {
-                self.chatbot_port_input.push(ch);
-            }
-            KeyCode::Enter => {
-                if parse_port(&self.chatbot_port_input).is_some() {
-                    self.mode = WizardMode::Confirm;
-                    self.status_message = "Review and confirm launch.".to_owned();
-                } else {
-                    self.status_message =
-                        "Invalid chatbot port. Please enter a value between 1 and 65535."
-                            .to_owned();
-                }
             }
             _ => {}
         }
@@ -594,11 +526,6 @@ impl AppState {
     fn build_result(&self) -> Option<SelectorResult> {
         let model = self.selected_model()?;
         let port = parse_port(&self.port_input)?;
-        let chatbot_port = if self.chatbot_enabled {
-            parse_port(&self.chatbot_port_input)?
-        } else {
-            parse_port(&self.chatbot_port_input).unwrap_or(3000)
-        };
         let api_key = if self.api_key_input.trim().is_empty() {
             "local-key".to_owned()
         } else {
@@ -610,8 +537,6 @@ impl AppState {
             model_id: model.id.clone(),
             port,
             api_key,
-            chatbot_enabled: self.chatbot_enabled,
-            chatbot_port,
         })
     }
 

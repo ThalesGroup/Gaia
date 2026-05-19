@@ -5,8 +5,7 @@ use anyhow::{Context, Result};
 use clap::Args;
 use gaia_core::backend::backend_from_name;
 use gaia_core::config::{
-    AppConfig, expand_tilde, is_prod_security_profile, normalize_model_revision,
-    normalize_security_profile,
+    AppConfig, is_prod_security_profile, normalize_model_revision, normalize_security_profile,
 };
 
 #[derive(Debug, Args)]
@@ -23,8 +22,6 @@ pub struct GenerateComposeArgs {
     pub model_revision: Option<String>,
     #[arg(long)]
     pub output: Option<PathBuf>,
-    #[arg(long)]
-    pub with_chatbot: bool,
     #[arg(
         long,
         value_name = "dev|prod",
@@ -71,10 +68,6 @@ pub fn run(args: GenerateComposeArgs) -> Result<()> {
     let mut compose = String::from("services:\n");
     compose.push_str(&backend_service);
 
-    if args.with_chatbot || config.chatbot.enabled {
-        compose.push_str(&chatbot_service(&config, backend.name()));
-    }
-
     let output_path = args
         .output
         .unwrap_or_else(|| PathBuf::from("docker-compose.yml"));
@@ -90,18 +83,6 @@ pub fn run(args: GenerateComposeArgs) -> Result<()> {
         println!("Export GAIA_API_KEY (and optional HF_TOKEN) before running docker compose.");
     }
     Ok(())
-}
-
-fn chatbot_service(config: &AppConfig, backend_name: &str) -> String {
-    let chatbot_path = expand_tilde(&config.chatbot.path);
-    format!(
-        "  gaia-chatbot:\n    build:\n      context: \"{}\"\n      dockerfile: Dockerfile\n    image: gaia-chatbot:local\n    container_name: gaia-chatbot\n    user: \"1000:1000\"\n    read_only: true\n    tmpfs:\n      - /tmp\n    security_opt:\n      - no-new-privileges:true\n    cap_drop:\n      - ALL\n    command:\n      - npm\n      - run\n      - preview\n      - --\n      - --host\n      - 0.0.0.0\n      - --port\n      - \"{}\"\n    ports:\n      - \"{}:{}\"\n    depends_on:\n      - gaia-{}\n",
-        chatbot_path.display(),
-        config.chatbot.port,
-        config.chatbot.port,
-        config.chatbot.port,
-        backend_name
-    )
 }
 
 fn maybe_enforce_prod_compose(service: String, prod_profile: bool) -> String {

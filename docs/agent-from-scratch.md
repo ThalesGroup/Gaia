@@ -1,11 +1,11 @@
-# Build a Chatbot or Agent From Scratch With Gaia
+# Build an Agent From Scratch With Gaia
 
-This tutorial walks from zero to a working LLM app using `gaia`.
+This tutorial walks from zero to a working LLM agent using `gaia`.
 It covers:
 
-- a local chatbot UI
-- a basic Python agent loop
-- a production-style multi-VM architecture
+- a fast local mock setup
+- a production-style backend launch
+- minimal Python and JavaScript agent examples
 
 ## 1) What You Need
 
@@ -49,9 +49,9 @@ This gives:
 - backend availability
 - model recommendations
 
-## 4) Fastest Path: Mock API + Chatbot UI
+## 4) Fastest Path: Mock API
 
-Use this when you want to validate app wiring before real inference costs.
+Use this when you want to validate agent wiring before real inference costs.
 
 Start mock API:
 
@@ -59,24 +59,10 @@ Start mock API:
 gaia serve --mock --detach --host 0.0.0.0 --port 8000
 ```
 
-Create chatbot project:
-
-```bash
-gaia init-chatbot --path ./gaia-chatbot --force
-```
-
-Run chatbot:
-
-```bash
-cd ./gaia-chatbot
-npm ci
-npm run dev -- --host 0.0.0.0 --port 3000
-```
-
 Open:
 
 - API: `http://localhost:8000/v1`
-- chatbot: `http://localhost:3000`
+- Health: `http://localhost:8000/health`
 
 Stop mock:
 
@@ -136,9 +122,7 @@ client = OpenAI(
     api_key=os.environ["GAIA_API_KEY"],
 )
 
-SYSTEM_PROMPT = "You are a concise assistant."
-
-messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+messages = [{"role": "system", "content": "You are a concise assistant."}]
 
 print("Agent ready. Type 'exit' to quit.")
 while True:
@@ -182,7 +166,6 @@ const client = new OpenAI({
 });
 
 const messages = [{ role: "system", content: "You are a concise assistant." }];
-
 const question = process.argv.slice(2).join(" ") || "Give me a one-line health check.";
 messages.push({ role: "user", content: question });
 
@@ -208,7 +191,7 @@ For production-like setups:
 
 1. Run `gaia` on worker VMs to manage model runtimes.
 2. Put a gateway/control plane in front (for example LiteLLM).
-3. Point apps/chatbots/agents to one gateway URL.
+3. Point all apps and agents to one gateway URL.
 
 This gives centralized routing, failover, and policy controls while keeping `gaia` focused on runtime orchestration.
 
@@ -224,4 +207,4 @@ This gives centralized routing, failover, and policy controls while keeping `gai
 
 - add `gaia generate-compose` for reproducible local stacks
 - add `gaia generate-k8s` for Kubernetes deployments
-- add CI checks with basic endpoint smoke tests for your agent app
+- add CI checks with endpoint smoke tests for your agent app

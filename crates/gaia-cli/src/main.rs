@@ -1,4 +1,3 @@
-mod chatbot_support;
 mod commands;
 mod final_output;
 mod mock_support;
@@ -31,8 +30,6 @@ enum Commands {
     GenerateK8s(commands::k8s::GenerateK8sArgs),
     GenerateSystemd(commands::systemd::GenerateSystemdArgs),
     Benchmark(commands::benchmark::BenchmarkArgs),
-    InitChatbot(commands::chatbot::InitChatbotArgs),
-    OpenChatbot(commands::chatbot::OpenChatbotArgs),
     #[command(name = "__mock-api", hide = true)]
     MockApi(commands::mock_api::MockApiArgs),
 }

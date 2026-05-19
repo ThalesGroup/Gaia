@@ -1,12 +1,5 @@
-pub fn print_final_summary(
-    backend_name: &str,
-    model_id: &str,
-    api_base_url: &str,
-    api_key: &str,
-    chatbot_url: Option<&str>,
-) {
+pub fn print_final_summary(backend_name: &str, model_id: &str, api_base_url: &str, api_key: &str) {
     let chat_endpoint = format!("{api_base_url}/chat/completions");
-    let chatbot_value = chatbot_url.unwrap_or("API only");
     let masked_api_key = mask_secret(api_key);
 
     println!();
@@ -18,7 +11,6 @@ pub fn print_final_summary(
     println!("| API base URL:   {:<43}|", truncate(api_base_url, 43));
     println!("| Chat endpoint:  {:<43}|", truncate(&chat_endpoint, 43));
     println!("| API key:        {:<43}|", truncate(&masked_api_key, 43));
-    println!("| Chatbot UI:     {:<43}|", truncate(chatbot_value, 43));
     println!("+-------------------------------------------------------------+");
 }
 

@@ -1,5 +1,4 @@
 pub mod benchmark;
-pub mod chatbot;
 pub mod compose;
 pub mod doctor;
 pub mod k8s;
@@ -31,8 +30,6 @@ pub fn run(command: Commands) -> Result<()> {
         Commands::GenerateK8s(args) => k8s::run(args),
         Commands::GenerateSystemd(args) => systemd::run(args),
         Commands::Benchmark(args) => benchmark::run(args),
-        Commands::InitChatbot(args) => chatbot::run_init(args),
-        Commands::OpenChatbot(args) => chatbot::run_open(args),
         Commands::MockApi(args) => mock_api::run(args),
     }
 }

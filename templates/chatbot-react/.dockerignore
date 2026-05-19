@@ -1,7 +1,0 @@
-node_modules
-dist
-gaia-chatbot.log
-.env
-.env.local
-.env.development
-.env.production

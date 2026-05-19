@@ -213,17 +213,11 @@ pub fn run(args: ServeArgs) -> Result<()> {
     }
 
     let api_base = backend.api_base_url(&serve_config);
-    let chatbot_url = if config.chatbot.enabled {
-        Some(format!("http://localhost:{}", config.chatbot.port))
-    } else {
-        None
-    };
     print_final_summary(
         backend.display_name(),
         &serve_config.model_id,
         &api_base,
         &serve_config.api_key,
-        chatbot_url.as_deref(),
     );
     print_connection_examples(&api_base, &serve_config.api_key, &serve_config.model_id);
 
@@ -339,17 +333,11 @@ fn run_mock_mode(args: ServeArgs, config: AppConfig, serve_config: ServeConfig) 
     }
 
     let api_base = serve_config.openai_base_url();
-    let chatbot_summary = if config.chatbot.enabled {
-        Some(format!("http://localhost:{}", config.chatbot.port))
-    } else {
-        None
-    };
     print_final_summary(
         "Mock OpenAI API",
         &serve_config.model_id,
         &api_base,
         &serve_config.api_key,
-        chatbot_summary.as_deref(),
     );
     print_connection_examples(&api_base, &serve_config.api_key, &serve_config.model_id);
 

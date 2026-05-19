@@ -11,7 +11,6 @@ pub struct AppConfig {
     pub server: ServerSection,
     pub backend: BackendSection,
     pub model: ModelSection,
-    pub chatbot: ChatbotSection,
     #[serde(default)]
     pub security: SecuritySection,
 }
@@ -39,13 +38,6 @@ pub struct ModelSection {
     #[serde(default = "default_quantization_profile")]
     pub quantization_profile: String,
     pub max_model_len: u32,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ChatbotSection {
-    pub enabled: bool,
-    pub port: u16,
-    pub path: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -185,11 +177,6 @@ impl Default for AppConfig {
                 quantization: "none".to_owned(),
                 quantization_profile: default_quantization_profile(),
                 max_model_len: 8192,
-            },
-            chatbot: ChatbotSection {
-                enabled: false,
-                port: 3000,
-                path: "~/.local/share/gaia/chatbot".to_owned(),
             },
             security: SecuritySection {
                 profile: default_security_profile(),

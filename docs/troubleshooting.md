@@ -106,36 +106,6 @@ Fix:
 - run `gaia select` in an interactive terminal
 - use `gaia serve ...` directly in automated scripts
 
-## Chatbot Folder Missing / `package.json` Not Found
-
-Typical error:
-
-- `cd gaia-chatbot: No such file or directory`
-- npm tries reading `.../gaia/package.json`
-
-Fix:
-
-1. Generate chatbot explicitly:
-   ```bash
-   gaia init-chatbot --path ./gaia-chatbot --force
-   ```
-2. Confirm folder exists.
-3. Run npm commands inside that folder (`npm ci`, then `npm run dev ...`).
-
-## Node Version Warning With Vite
-
-Symptom:
-
-- Vite warns about Node version requirements
-
-Impact:
-
-- can still run in many cases, but unsupported versions may cause instability
-
-Fix:
-
-- upgrade Node.js to a supported version for your Vite release
-
 ## Mock API Keeps Running
 
 Stop cleanly:
@@ -155,11 +125,11 @@ gaia logs --mock --lines 200
 
 Symptoms:
 
-- backend or chatbot fails to bind host port
+- backend fails to bind host port
 
 Fix:
 
-- change `--port` (API) or chatbot port
+- change `--port` (API)
 - stop old processes/containers before relaunch
 - verify with system tools (`ss`, `lsof`, or Docker status)
 

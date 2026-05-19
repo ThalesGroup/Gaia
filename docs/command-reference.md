@@ -161,12 +161,11 @@ Generate a Docker Compose file for one backend/model.
 Notes:
 
 - Backend images are pinned by digest.
-- Chatbot service is built once from a Dockerfile and runs without `npm install` at runtime.
 - Generated backend services run with non-root user, read-only root filesystem, and dropped Linux capabilities.
 - Export `GAIA_API_KEY` (and optional `HF_TOKEN`) before `docker compose up`.
 
 ```bash
-gaia generate-compose [--backend <BACKEND>] [--model <MODEL>] [--model-revision <COMMIT_SHA>] [--security-profile <dev|prod>] [--output <PATH>] [--with-chatbot]
+gaia generate-compose [--backend <BACKEND>] [--model <MODEL>] [--model-revision <COMMIT_SHA>] [--security-profile <dev|prod>] [--output <PATH>]
 ```
 
 Examples:
@@ -174,7 +173,6 @@ Examples:
 ```bash
 gaia generate-compose --backend tgi --model mistralai/Mistral-7B-Instruct-v0.3
 gaia generate-compose --security-profile prod --backend vllm --model Qwen/Qwen2.5-7B-Instruct
-gaia generate-compose --with-chatbot --output docker-compose.local.yml
 ```
 
 ## `generate-k8s`
@@ -227,36 +225,6 @@ gaia benchmark
 gaia benchmark --requests 30 --prompt "Summarize Rust ownership in one sentence."
 gaia benchmark --base-url http://10.0.0.20:8000/v1 --api-key local-key --model Qwen/Qwen2.5-7B-Instruct
 gaia benchmark --mock --requests 100
-```
-
-## `init-chatbot`
-
-Scaffold the React/Vite chatbot template.
-
-```bash
-gaia init-chatbot [--path <PATH>] [--force] [--skip-install]
-```
-
-Examples:
-
-```bash
-gaia init-chatbot
-gaia init-chatbot --path ./gaia-chatbot --force
-gaia init-chatbot --skip-install
-```
-
-## `open-chatbot`
-
-Print chatbot URL (helpful for remote terminals).
-
-```bash
-gaia open-chatbot [--url <URL>]
-```
-
-Example:
-
-```bash
-gaia open-chatbot
 ```
 
 ## Backends Supported
