@@ -26,7 +26,7 @@
   <a href="#production-secure-checklist-5-commands">Security</a>
 </p>
 
-`gaia` is a terminal-first toolkit to deploy open-weights LLMs with a practical CLI/TUI workflow.
+Gaia is a terminal-first toolkit to deploy open-weights LLMs with a practical CLI/TUI workflow.
 
 It is designed to stay focused on runtime orchestration:
 

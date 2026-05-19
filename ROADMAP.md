@@ -62,31 +62,88 @@ Success criteria:
 - fewer wrong-size recommendations
 - safer automation with human review checkpoints
 
-## Mid Term
+## Platform Orchestration Expansion
 
-### 4) Deployment State And Drift Visibility (Exploring)
+### 4) Fleet Management And Environments (Planned)
 
-Goal: make local config, generated artifacts, and live runtime state easy to compare.
+Goal: manage multiple deployment targets through explicit environments (`dev`, `stage`, `prod`) across VMs and Kubernetes clusters.
 
-Potential outcomes:
+Scope:
 
-- `gaia status --wide` with desired vs actual state
-- drift warnings for ports/models/backend mismatch
-- structured status output for CI pipelines
+- inventory of targets/environments (`dev`, `stage`, `prod`, VM, cluster)
+- environment-scoped credentials and defaults
+- target selection and safety confirmations by environment
 
-### 5) Multi-Node Orchestration Helpers (Exploring)
+### 5) Desired State And Reconciliation (Exploring)
 
-Goal: simplify operating several Gaia worker nodes behind one gateway.
+Goal: define a desired runtime state and continuously converge actual runtime toward it.
 
-Potential outcomes:
+Scope:
 
-- worker registry commands
-- health aggregation
-- standard gateway integration patterns (for example LiteLLM)
+- declarative desired state representation (model/backend/version/replicas/policy)
+- reconciliation loop to detect drift and re-apply desired configuration
+- explicit convergence status in CLI output
 
-## Quality Gates (Ongoing)
+### 6) Rollout Strategies (Exploring)
 
-- preserve OpenAI-compatible API behavior guarantees
-- keep security defaults hardened in generated artifacts
-- maintain deterministic CI checks for critical paths
-- document every new deploy flow with copy-paste runnable examples
+Goal: support safer production releases with progressive traffic movement and conditional rollback.
+
+Scope:
+
+- canary rollout
+- blue-green rollout
+- progressive rollout with policy checks
+- conditional rollback based on health/SLO thresholds
+
+### 7) Auto-Remediation (Exploring)
+
+Goal: trigger recovery actions automatically when service quality degrades.
+
+Scope:
+
+- restart/redeploy rules based on SLO signals (latency, errors, availability)
+- cooldown windows and retry budgets
+- operator-visible remediation history
+
+### 8) Drift Detection (Planned)
+
+Goal: detect and correct divergence between declared config and live runtime.
+
+Scope:
+
+- config/runtime drift detection
+- explainable drift reports
+- optional auto-correction or approval-gated correction
+
+### 9) Release History And Audit Trail (Planned)
+
+Goal: provide reliable deployment traceability.
+
+Scope:
+
+- who deployed what, when, and where
+- deployment result/status with failure reason
+- searchable release timeline per environment
+
+## Product Features (Visible UX)
+
+### 10) `gaia env` (Planned)
+
+Manage target environments and deployment contexts.
+
+### 11) `gaia rollout` (Exploring)
+
+Run canary/blue-green/progressive rollout flows in one command.
+
+### 12) `gaia watch` (Exploring)
+
+Live deployment/runtime watch mode with simple alerts and health signals.
+
+### 13) `gaia diff` / `gaia plan` (Planned)
+
+Preview changes before apply (`desired` vs `current`) with risk hints.
+
+### 14) `gaia promote` (Planned)
+
+Promote a validated model/version from one environment to another.
+
