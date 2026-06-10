@@ -45,46 +45,62 @@ Current compatibility mapping used by `gaia`:
 
 Use this when curating or generating catalog entries.
 
-## Auto-Prefill From Hugging Face API
+## Refresh From Hugging Face API (`gaia catalog`)
 
 Use:
 
 ```bash
-python3 hf_catalog_prefill.py --output catalog/models.generated.yaml
+gaia catalog refresh
 ```
 
 Useful modes:
 
 ```bash
 # Add top N discovered text-generation models to existing ids
-python3 hf_catalog_prefill.py --discover-limit 20 --output catalog/models.generated.yaml
+gaia catalog refresh --discover-limit 20
 
 # Only discovered models, no existing catalog seed
-python3 hf_catalog_prefill.py --no-existing --discover-limit 50 --output catalog/models.generated.yaml
+gaia catalog refresh --no-existing --discover-limit 50
 
 # Force downloads ranking instead of trending
-python3 hf_catalog_prefill.py --discover-sort downloads --discover-limit 30 --output catalog/models.generated.yaml
+gaia catalog refresh --sort downloads --discover-limit 30
 
 # Explicit list
-python3 hf_catalog_prefill.py --no-existing \
-  --ids Qwen/Qwen2.5-7B-Instruct mistralai/Mistral-7B-Instruct-v0.3 \
-  --output catalog/models.generated.yaml
+gaia catalog refresh --no-existing \
+  --ids Qwen/Qwen2.5-7B-Instruct mistralai/Mistral-7B-Instruct-v0.3
+
+# Preview without writing a file
+gaia catalog refresh --dry-run
 ```
 
-Then review and promote:
+Then review the generated file and promote it:
 
 ```bash
-cp catalog/models.generated.yaml catalog/models.yaml
+gaia catalog promote
 ```
 
-## Script Defaults
+`promote` validates the generated file before replacing `catalog/models.yaml`.
 
-`hf_catalog_prefill.py` defaults to:
+## Refresh Defaults
+
+`gaia catalog refresh` defaults to:
 
 - text-generation discovery pipeline
-- existing catalog seed enabled (unless `--no-existing`)
+- existing catalog seed from `catalog/models.yaml` (unless `--no-existing`)
 - output file `catalog/models.generated.yaml`
 - token from `HF_TOKEN` if available
+
+Parameter sizes are estimated in this order: explicit values from metadata and
+model names (largest plausible value wins, so MoE names like `30B-A3B` resolve
+to total parameters), then a transformer estimate derived from `config.json`,
+then a conservative fallback.
+
+## Refresh From The TUI
+
+In `gaia select`, press `r` to refresh the catalog in the background (current
+catalog ids + top trending models). The refreshed catalog applies to the
+current session only; run `gaia catalog refresh` + `gaia catalog promote` to
+persist changes.
 
 ## Curation Tips
 

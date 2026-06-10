@@ -614,6 +614,7 @@ dependencies = [
  "rand 0.9.4",
  "reqwest",
  "serde_json",
+ "serde_yaml",
  "tiny_http",
 ]
 
@@ -623,7 +624,9 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "directories",
+ "reqwest",
  "serde",
+ "serde_json",
  "serde_yaml",
  "sysinfo",
  "thiserror 2.0.18",

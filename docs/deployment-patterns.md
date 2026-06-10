@@ -94,6 +94,8 @@ Install and enable with `systemctl`.
 gaia generate-compose --backend tgi --model mistralai/Mistral-7B-Instruct-v0.3
 ```
 
+All generated artifacts (compose files, Kubernetes manifests, systemd units) are meant to be reviewed and applied by you: Gaia never deploys or pushes anything without your explicit action.
+
 ## Security And Operations Checklist
 
 - Use non-empty API keys in production.

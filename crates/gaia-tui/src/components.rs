@@ -4,7 +4,7 @@ use ratatui::text::Span;
 use gaia_core::recommendation::FitStatus;
 
 pub fn footer_help() -> &'static str {
-    "Enter: select | /: search | x: clear search | f: filters | b: backend | c: category | s: size | Space: details focus | q: quit"
+    "Enter: select | /: search | x: clear search | f: filters | b: backend | c: category | s: size | r: refresh catalog | Space: details focus | q: quit"
 }
 
 pub fn spinner_frame(tick: usize) -> &'static str {

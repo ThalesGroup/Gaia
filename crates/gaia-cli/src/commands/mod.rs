@@ -1,4 +1,5 @@
 pub mod benchmark;
+pub mod catalog;
 pub mod compose;
 pub mod doctor;
 pub mod k8s;
@@ -20,6 +21,7 @@ pub fn run(command: Commands) -> Result<()> {
     match command {
         Commands::Doctor(args) => doctor::run(args),
         Commands::Models(args) => models::run(args),
+        Commands::Catalog(args) => catalog::run(args),
         Commands::Recommend(args) => recommend::run(args),
         Commands::Select(args) => select::run(args),
         Commands::Serve(args) => serve::run(args),

@@ -20,6 +20,7 @@ struct Cli {
 enum Commands {
     Doctor(commands::doctor::DoctorArgs),
     Models(commands::models::ModelsArgs),
+    Catalog(commands::catalog::CatalogArgs),
     Recommend(commands::recommend::RecommendArgs),
     Select(commands::select::SelectArgs),
     Serve(commands::serve::ServeArgs),

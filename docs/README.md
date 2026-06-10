@@ -28,7 +28,7 @@ This directory contains the complete project documentation.
 - `docs/model-catalog.md`
   - `catalog/models.yaml` schema
   - Catalog filtering and recommendation behavior
-  - Hugging Face prefill script usage
+  - Hugging Face refresh workflow (`gaia catalog`)
 - `docs/troubleshooting.md`
   - Most common setup/runtime issues
   - Quick diagnostics and recovery commands

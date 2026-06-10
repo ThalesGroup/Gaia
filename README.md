@@ -77,6 +77,8 @@ Full documentation lives in `docs/`:
 - model pinning by immutable commit SHA (`--model-revision`)
 - mock OpenAI API mode with `chat/completions`, `completions`, `responses`, `embeddings`, and audio endpoints (`--mock`)
 
+> Note: LLM models referenced or deployed through Gaia are subject to their own licenses. Always check the license terms of a model on its Hugging Face page before use.
+
 ## Install From Source
 
 Requirements:
@@ -133,6 +135,8 @@ In `prod` profile:
 - API key fallback is disabled (explicit secret required)
 - missing `HF_TOKEN` is blocked only for gated models
 
+Deployment artifacts (`generate-compose`, `generate-k8s`, `generate-systemd`) are files you review and apply yourself: Gaia never deploys or pushes anything without your explicit action.
+
 ## Guided Interactive Flow
 
 Use the TUI wizard:
@@ -160,6 +164,7 @@ gaia serve \
 
 - `gaia doctor`
 - `gaia models`
+- `gaia catalog`
 - `gaia recommend`
 - `gaia select`
 - `gaia serve`
@@ -184,23 +189,26 @@ Core shortcuts:
 - `f` or `c`: category filter
 - `s`: size filter
 - `b`: switch backend
+- `r`: refresh catalog from Hugging Face (session only)
 - `Space`: focus model details panel (scroll details and inspect full HF URL in footer)
 - `q`: quit
 
 
-## Model Catalog Prefill (Hugging Face API)
+## Model Catalog Refresh (Hugging Face API)
 
-Use:
-
-```bash
-python3 hf_catalog_prefill.py --output catalog/models.generated.yaml
-```
-
-Then review and promote:
+Refresh catalog metadata and discover trending models:
 
 ```bash
-cp catalog/models.generated.yaml catalog/models.yaml
+gaia catalog refresh --discover-limit 20
 ```
+
+Then review the generated file and promote it:
+
+```bash
+gaia catalog promote
+```
+
+In the TUI (`gaia select`), press `r` to refresh the catalog for the current session.
 
 See `docs/model-catalog.md` for full options.
 
@@ -214,9 +222,17 @@ gaia/
     gaia-cli/
     gaia-tui/
   docs/
-  examples/
 ```
+
+## Assets / Credits
+
+The visual assets in `assets/images/` (logo and banner) were generated with an AI image tool for this project. The TUI screenshot is a real terminal capture.
 
 ## License
 
-MIT
+Gaia is released under the MIT license (see `LICENSE`).
+
+Additional notes:
+
+- Third-party dependencies bundled or referenced by this project remain subject to their own licenses.
+- LLM models mentioned in this repository or deployed through Gaia are subject to their own licenses; check each model's terms (for example on its Hugging Face page) before use.

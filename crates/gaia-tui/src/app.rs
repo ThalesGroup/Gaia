@@ -1,8 +1,24 @@
+use std::sync::mpsc::{self, Receiver, TryRecvError};
+use std::thread;
+
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use gaia_core::backend::{BackendAvailability, backend_from_name};
+use gaia_core::hf_catalog::{self, RefreshOptions, RefreshProgress};
 use gaia_core::machine::MachineSpecs;
-use gaia_core::model_catalog::ModelCatalog;
+use gaia_core::model_catalog::{ModelCatalog, ModelEntry};
 use gaia_core::recommendation::{FitStatus, PreferredBackend, RecommendationEngine};
+
+/// Number of trending models fetched on top of the current catalog ids when
+/// refreshing from the TUI.
+const TUI_REFRESH_DISCOVER_LIMIT: usize = 10;
+const TUI_REFRESH_TIMEOUT_SECS: u64 = 15;
+
+#[derive(Debug)]
+pub enum CatalogRefreshUpdate {
+    Progress { index: usize, total: usize },
+    Done(Vec<ModelEntry>),
+    Failed(String),
+}
 
 #[derive(Debug, Clone)]
 pub struct SelectorInput {
@@ -100,7 +116,7 @@ pub enum AppAction {
     Confirmed(SelectorResult),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct AppState {
     pub machine: MachineSpecs,
     pub mode: WizardMode,
@@ -124,6 +140,7 @@ pub struct AppState {
     pub model_details_scroll: u16,
     pub details_focus: bool,
     catalog: ModelCatalog,
+    catalog_refresh: Option<Receiver<CatalogRefreshUpdate>>,
 }
 
 impl AppState {
@@ -197,6 +214,7 @@ impl AppState {
             model_details_scroll: 0,
             details_focus: false,
             catalog: input.catalog,
+            catalog_refresh: None,
         };
 
         app.rebuild_models(input.default_model.as_deref());
@@ -205,6 +223,101 @@ impl AppState {
 
     pub fn on_tick(&mut self) {
         self.spinner_tick = self.spinner_tick.wrapping_add(1);
+        self.poll_catalog_refresh();
+    }
+
+    pub fn is_refreshing_catalog(&self) -> bool {
+        self.catalog_refresh.is_some()
+    }
+
+    fn start_catalog_refresh(&mut self) {
+        if self.catalog_refresh.is_some() {
+            self.status_message = "Catalog refresh already in progress...".to_owned();
+            return;
+        }
+
+        let seed_ids: Vec<String> = self
+            .catalog
+            .models
+            .iter()
+            .map(|model| model.id.clone())
+            .collect();
+        let (sender, receiver) = mpsc::channel();
+
+        thread::spawn(move || {
+            let options = RefreshOptions {
+                seed_ids,
+                discover_limit: TUI_REFRESH_DISCOVER_LIMIT,
+                timeout_secs: TUI_REFRESH_TIMEOUT_SECS,
+                ..RefreshOptions::default()
+            };
+            let progress_sender = sender.clone();
+            let outcome = hf_catalog::refresh_entries(&options, move |progress| {
+                if let RefreshProgress::Model { index, total, .. } = progress {
+                    let _ = progress_sender.send(CatalogRefreshUpdate::Progress { index, total });
+                }
+            });
+            let update = match outcome {
+                Ok(report) => CatalogRefreshUpdate::Done(report.entries),
+                Err(error) => CatalogRefreshUpdate::Failed(format!("{error:#}")),
+            };
+            let _ = sender.send(update);
+        });
+
+        self.catalog_refresh = Some(receiver);
+        self.status_message = "Refreshing catalog from Hugging Face...".to_owned();
+    }
+
+    fn poll_catalog_refresh(&mut self) {
+        let Some(receiver) = &self.catalog_refresh else {
+            return;
+        };
+
+        loop {
+            match receiver.try_recv() {
+                Ok(CatalogRefreshUpdate::Progress { index, total }) => {
+                    self.status_message =
+                        format!("Refreshing catalog from Hugging Face... {index}/{total}");
+                }
+                Ok(CatalogRefreshUpdate::Done(entries)) => {
+                    self.catalog_refresh = None;
+                    let count = entries.len();
+                    self.catalog = ModelCatalog { models: entries };
+                    self.rebuild_category_options();
+                    self.rebuild_models(None);
+                    self.status_message = format!(
+                        "Catalog refreshed: {count} models (session only; run `gaia catalog refresh` to persist)."
+                    );
+                    return;
+                }
+                Ok(CatalogRefreshUpdate::Failed(error)) => {
+                    self.catalog_refresh = None;
+                    self.status_message = format!("Catalog refresh failed: {error}");
+                    return;
+                }
+                Err(TryRecvError::Empty) => return,
+                Err(TryRecvError::Disconnected) => {
+                    self.catalog_refresh = None;
+                    self.status_message = "Catalog refresh stopped unexpectedly.".to_owned();
+                    return;
+                }
+            }
+        }
+    }
+
+    fn rebuild_category_options(&mut self) {
+        let mut categories = self
+            .catalog
+            .models
+            .iter()
+            .flat_map(|model| model.categories.iter().cloned())
+            .collect::<Vec<_>>();
+        categories.sort();
+        categories.dedup();
+        categories.insert(0, "all".to_owned());
+        self.category_options = categories;
+        self.category_picker_index = 0;
+        self.selected_category = None;
     }
 
     pub fn current_backend(&self) -> BackendChoice {
@@ -314,6 +427,9 @@ impl AppState {
                 } else {
                     self.clear_search();
                 }
+            }
+            KeyCode::Char('r') => {
+                self.start_catalog_refresh();
             }
             KeyCode::Char('/') => {
                 self.search_input = self.search_query.clone();

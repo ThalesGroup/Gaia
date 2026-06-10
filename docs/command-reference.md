@@ -36,6 +36,46 @@ gaia models --max-params 14
 gaia models --backend vllm --recommended-only
 ```
 
+## `catalog`
+
+Manage the local model catalog from the Hugging Face API.
+
+### `catalog refresh`
+
+Refresh catalog entries (metadata, parameter sizes, categories) and optionally discover new models.
+
+```bash
+gaia catalog refresh [--discover-limit <N>] [--sort <trending|downloads>] [--ids <ID>...] [--search <QUERY>] [--from-existing <PATH>] [--no-existing] [--output <PATH>] [--dry-run] [--timeout <SECS>]
+```
+
+Examples:
+
+```bash
+gaia catalog refresh
+gaia catalog refresh --discover-limit 20
+gaia catalog refresh --no-existing --ids Qwen/Qwen2.5-7B-Instruct --dry-run
+gaia catalog refresh --sort downloads --discover-limit 30
+```
+
+Notes:
+
+- Writes to `catalog/models.generated.yaml` by default so you can review before promoting.
+- Uses `HF_TOKEN` automatically when present (gated metadata, better rate limits).
+
+### `catalog promote`
+
+Validate and promote a generated catalog to the active catalog file.
+
+```bash
+gaia catalog promote [--input <PATH>] [--output <PATH>]
+```
+
+Example:
+
+```bash
+gaia catalog promote
+```
+
 ## `recommend`
 
 Show ranked model recommendations based on detected hardware.
@@ -64,6 +104,7 @@ Notes:
 - Requires an interactive TTY terminal.
 - `--mock` launches the mock API instead of a real backend after confirmation.
 - Mock API endpoints include `/v1/models`, `/v1/chat/completions`, `/v1/completions`, `/v1/responses`, `/v1/embeddings`, `/v1/audio/transcriptions`, and `/v1/audio/speech`.
+- Press `r` in the model list to refresh the catalog from Hugging Face for the current session.
 
 ## `serve`
 
