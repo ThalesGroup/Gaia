@@ -6,6 +6,12 @@
 catalog/models.yaml
 ```
 
+This is the **active curated catalog** used by `gaia models`, `gaia recommend`, and the TUI.
+
+The repository also includes `catalog/models.generated.yaml` as an **example output** from
+`gaia catalog refresh`. It is not the active catalog: review it and run `gaia catalog promote`
+to replace `models.yaml`, or regenerate it locally when refreshing metadata from Hugging Face.
+
 ## Schema
 
 Each model entry includes:

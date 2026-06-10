@@ -205,6 +205,7 @@ This gives centralized routing, failover, and policy controls while keeping `gai
 
 ## 10) Next Steps
 
-- add `gaia generate-compose` for reproducible local stacks
-- add `gaia generate-k8s` for Kubernetes deployments
-- add CI checks with endpoint smoke tests for your agent app
+- run `gaia generate-compose` or `gaia generate-k8s` for reproducible deployment artifacts (review before apply)
+- refresh the catalog with `gaia catalog refresh` and `gaia catalog promote`
+- add CI smoke tests for your agent against the Gaia endpoint
+- for multi-VM setups, see `docs/deployment-patterns.md` (LiteLLM gateway pattern)

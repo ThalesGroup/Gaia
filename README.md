@@ -53,6 +53,7 @@ Full documentation lives in `docs/`:
 ## Project Policies
 
 - `CONTRIBUTING.md`
+- `CONTRIBUTORS.md`
 - `SECURITY.md`
 - `CODE_OF_CONDUCT.md`
 - `LICENSE`
@@ -207,6 +208,9 @@ Then review the generated file and promote it:
 ```bash
 gaia catalog promote
 ```
+
+`catalog/models.generated.yaml` in the repo is sample refresh output for review, not the active
+catalog (`catalog/models.yaml` is what Gaia loads at runtime).
 
 In the TUI (`gaia select`), press `r` to refresh the catalog for the current session.
 

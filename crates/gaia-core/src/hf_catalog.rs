@@ -1,7 +1,6 @@
 //! Hugging Face catalog refresh: discover models and build catalog entries.
 //!
-//! This module ports the legacy `hf_catalog_prefill.py` logic to Rust so the
-//! catalog can be refreshed from the CLI (`gaia catalog refresh`) and the TUI.
+//! Used by `gaia catalog refresh` and the TUI session refresh (`r` in `gaia select`).
 
 use anyhow::{Context, Result, anyhow, bail};
 use serde_json::{Map, Value};
