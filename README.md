@@ -238,5 +238,5 @@ Gaia is released under the MIT license (see `LICENSE`).
 
 Additional notes:
 
-- Third-party dependencies bundled or referenced by this project remain subject to their own licenses.
+- Third-party dependencies referenced by this project remain subject to their own licenses.
 - LLM models mentioned in this repository or deployed through Gaia are subject to their own licenses; check each model's terms (for example on its Hugging Face page) before use.
